@@ -4,30 +4,26 @@ module FormsLab
   class App < Sinatra::Base
 
     # code other routes/actions here
-
-    get "/" do 
-    
-      erb:root
+    get '/' do
+      erb :root
     end
 
-    post "/root"  do  #we need to write a form for the landing
-
-    erb :root
-
-
+    get '/new' do
+      erb :"pirates/new"
     end
 
-    get '/new' do 
+    post '/pirates' do
+      @pirate = Pirate.new(params[:pirate])
+  
+      params[:pirate][:ships].each do |details|
+        Ship.new(details)
+      end
+      
+      @ships = Ship.all 
 
-    erb :'/pirates/new'
 
+      erb :"pirates/show"
     end
 
-    post '/pirates' do 
-      binding.pry
-      @pirates = Pirate.create(params)
-     
-      redirect :'/show'
-    end
   end
 end
